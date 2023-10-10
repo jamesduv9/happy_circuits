@@ -1,0 +1,59 @@
+################################################################################################
+# Example Intent File                                                                          #
+# all values ending with _conform must be configured with operators, (lt, le, gt, ge, eq)      #
+# Specify your intent, not the fail condition, example: I WANT "le 20" crc errors              #
+# Set any test value to null to skip the specific test                                         #
+################################################################################################
+---
+config:
+  devices:                              
+    router1:                                      #Device hostname - must match testbed key
+      circuits:
+        - circuit: AAA1                             #Circuit identifier
+          interface: GigabitEthernet3               #Interface tied to circuit
+          is_subinterface: False                    #If subinterface set to True
+          tests:    
+
+            #######################################################
+            # BGP test parameters                                 #
+            #######################################################                
+            bgp:
+              test_bgp: True
+              vrf: null                               #Specify as null for global, or an actual VRF name
+              neighbors:                             
+                - neighbor_ip: 169.254.100.2          #List of neighbors you expect to see over this circuit
+                  uptime_conform: gt 1                #How many DAYS we expect the bgp peer to be up at minimum. 
+                  address_families:                         
+                    - address_family: ipv4 unicast    #Valid types - ipv4 unicast, vpnv4 unicast 
+                      received_routes:                #Each route will be verified to exist in show ip bgp neighbor X received-routes
+                        - 10.1.1.0/24
+                      advertised_routes:              #Each route will be verified to exist in show ip bgp neighbor X advertised-routes
+                        - 172.16.0.1/32
+            #######################################################
+            # ICMP test parameters                                #
+            #######################################################
+            icmp:
+              test_icmp: True                         #To icmp test or not to icmp test. Disable if icmp blocked on interface
+              pingable_address: 169.254.100.2         #Address that SHOULD be pingable across this circuit
+              ping_count: 100                         #How many pings to send
+              success_rate_percent_conform: ge 90     #What percentage of pings should go through successfully
+              max_ms_conform: le 20                   #Highest latency ping should be within what range (in ms)
+              jitter_conform: le 50                   #Jitter in ms, max_ms - min_ms ping
+              vrf: null                               #Specify as null for global, or an actual VRF name
+            #######################################################
+            # Interface level tests - After correcting a failure, #
+            #  suggested to clear counters on the device          #
+            #######################################################
+            interface:                                #Define the interface test
+              test_interface: True                    #To test or not to test the interface
+              ipv4: 169.254.100.1/30                  #Validate the interface has the required IP
+              in_errors_conform: le 200               #How many in errors are acceptable
+              in_crc_errors_conform: le 200           #How many crc errors are acceptable
+              out_errors_conform: le 200              #How many out errors are acceptable
+              out_collision_conform: le 200           #How many out collisions are acceptable
+              txload_conform: le 128                  #What is the max acceptable txload? (out of 255)
+              rxload_conform: le 128                  #What is the max acceptable rxload? (out of 255)
+              duplex: Full                            #What duplex should the interface be operating at? (Full or Half)
+              line_protocol: up                       #Should this interface be up or down?
+              enabled: True                           #Should this interface be enabled?
+...
