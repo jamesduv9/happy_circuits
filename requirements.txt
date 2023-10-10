@@ -23,4 +23,3 @@ genie.libs.ops==23.9
 genie.libs.parser==23.9
 genie.libs.sdk==23.9
 genie.telemetry==23.9
-genie.trafficgen==23.
