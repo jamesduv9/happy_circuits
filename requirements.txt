@@ -13,3 +13,14 @@ pyats.results==23.9
 pyats.tcl==23.9
 pyats.topology==23.9
 pyats.utils==23.9
+ntc-templates==3.5.0
+genie==23.9
+genie.libs.clean==23.9
+genie.libs.conf==23.9
+genie.libs.filetransferutils==23.9
+genie.libs.health==23.9
+genie.libs.ops==23.9
+genie.libs.parser==23.9
+genie.libs.sdk==23.9
+genie.telemetry==23.9
+genie.trafficgen==23.

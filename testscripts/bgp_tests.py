@@ -2,6 +2,7 @@ import logging
 from pyats import aetest
 from pprint import pprint
 from genie.metaparser.util.exceptions import SchemaEmptyParserError
+from ntc_templates.parse import parse_output
 from helpers.helpers import *
 
 
@@ -63,11 +64,11 @@ class BGPTests(aetest.Testcase):
                     #Get details for neighbor_received_routes
                     with substep.start(f"{circuit_id}-{interface} - Getting Neighbor Received Routes") as subsubstep:
                         try:
-                            neighbor_received = self.parent.parameters['device'].parse(f"show ip bgp neighbor {neighbor_ip} received-routes")
-                            test = self.parent.parameters['device'].execute(f"show ip bgp neighbor {neighbor_ip} received-routes")
-                            print(test)
+                            neighbor_received = self.parent.parameters['device'].parse(f"show ip bgp neighbor {neighbor_ip} routes")
+                            #neighbor_received = self.parent.parameters['device'].execute(f"show ip bgp neighbor {neighbor_ip} received-routes")
+                            #neighbor_received = parse_output(platform="cisco_ios", command=f"show ip bgp neighbor {neighbor_ip} received-routes", data=neighbor_received)
                         except SchemaEmptyParserError:
-                            subsubstep.skipped("No output from parser, neighbor likely not configured for soft-reconfiguration inbound")
+                            subsubstep.skipped("No output from parser, invalid command or incorrect neighbor")
                             neighbor_received = {}
                         neighbor_received = neighbor_received.get("vrf", {}).get(vrf, {}).get('neighbor', {}).get(neighbor_ip, {})
                         self.neighbor_received_routes.setdefault(interface, {})[neighbor_ip] = neighbor_received
@@ -83,9 +84,10 @@ class BGPTests(aetest.Testcase):
             circuit_id = circuit['circuit']
             interface = circuit['interface']
             with steps.start(f"{circuit_id} - Validating neighbor uptime", continue_=True) as substep:
+                #Check to see if this test is really needed or not
                 if not self.bgp_test_params.get(interface, {}).get('test_bgp'):
                     substep.skipped("No bgp test requested")
-
+                #Check to see if we even have bgp neighbor details for this peer
                 if not self.ip_bgp_neighbors.get(interface, {}):
                     substep.failed("Could not find neighbor values for this circuit")
                 for neighbor_ip, neighbor_values in self.ip_bgp_neighbors.get(interface, {}).items():
