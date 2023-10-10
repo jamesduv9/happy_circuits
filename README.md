@@ -99,10 +99,6 @@ config:
               enabled: True                           #Should this interface be enabled?
 ...
 ```
-## Prerequisites
-- Ensure you have `pyATS` installed and set up in your environment.
-- Familiarity with networking terms such as BGP, ICMP, and crc is beneficial.
-
 ## Known Issues
 - The Genie Parser for "show ip bgp received-routes", doesn't not provide routes. Will update this with some custom regex instead.
 
