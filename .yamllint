@@ -1,0 +1,14 @@
+extends: default
+
+ignore: |
+  path/to/ignored/file.yaml
+  path/to/another/ignored/file.yaml
+
+rules:
+  line-length: disable
+  document-start: disable
+  comments: disable
+  comments-indentation: disable
+  
+  trailing-spaces: false
+  truthy: disable

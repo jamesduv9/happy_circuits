@@ -1,0 +1,15 @@
+pyats==23.9
+pyats.aereport==23.9
+pyats.aetest==23.9
+pyats.async==23.9
+pyats.connections==23.9
+pyats.contrib==23.9
+pyats.datastructures==23.9
+pyats.easypy==23.9
+pyats.kleenex==23.9
+pyats.log==23.9
+pyats.reporter==23.9
+pyats.results==23.9
+pyats.tcl==23.9
+pyats.topology==23.9
+pyats.utils==23.9
