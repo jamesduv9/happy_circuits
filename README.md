@@ -100,5 +100,5 @@ config:
 ...
 ```
 ## Known Issues
-- The Genie Parser for "show ip bgp received-routes", doesn't not provide routes. Will update this with some custom regex instead.
+- The Genie parser for "show ip bgp neighbor x.x.x.x routes" provides the routes received without CIDR notation. Because of this the script only verifies that the received route is matched without prefix length. For example if you want to test that you receive 10.1.1.0/24, and you instead only receive 10.1.1.0/30, the test will still return as passed.
 
