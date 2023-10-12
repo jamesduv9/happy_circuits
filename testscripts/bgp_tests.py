@@ -65,14 +65,11 @@ class BGPTests(aetest.Testcase):
                     with substep.start(f"{circuit_id}-{interface} - Getting Neighbor Received Routes") as subsubstep:
                         try:
                             neighbor_received = self.parent.parameters['device'].parse(f"show ip bgp neighbor {neighbor_ip} routes")
-                            #neighbor_received = self.parent.parameters['device'].execute(f"show ip bgp neighbor {neighbor_ip} received-routes")
-                            #neighbor_received = parse_output(platform="cisco_ios", command=f"show ip bgp neighbor {neighbor_ip} received-routes", data=neighbor_received)
                         except SchemaEmptyParserError:
                             subsubstep.skipped("No output from parser, invalid command or incorrect neighbor")
                             neighbor_received = {}
                         neighbor_received = neighbor_received.get("vrf", {}).get(vrf, {}).get('neighbor', {}).get(neighbor_ip, {})
                         self.neighbor_received_routes.setdefault(interface, {})[neighbor_ip] = neighbor_received
-                        pprint(self.neighbor_received_routes)
 
 
     @aetest.test
@@ -159,7 +156,9 @@ class BGPTests(aetest.Testcase):
                             if not af.get('advertised_routes'):
                                 subsubstep.skip("No advertised routes specified, skipping this test")
                             for tested_route in af.get('received_routes'):
-                                received_routes = neighbor_values.get('address_family', {}).get(af_name, {}).get("received_routes").keys()
+                                logging.critical("Take this test with a grain of salt, Cannot validate prefix length of the route due to Genie parser")
+                                tested_route = tested_route.split('/')[0]
+                                received_routes = neighbor_values.get('address_family', {}).get(af_name, {}).get("routes").keys()
                                 
                                 logging.info(f"Expecting to find {tested_route} in {received_routes}")
                                 assert tested_route in received_routes
