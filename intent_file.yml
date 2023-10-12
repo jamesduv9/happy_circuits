@@ -7,11 +7,11 @@
 ---
 config:
   devices:                              
-    router1:                                      #Device hostname - must match testbed key
+    router1:                                          #Device hostname - must match testbed key
       circuits:
-        - circuit: AAA1                             #Circuit identifier
-          interface: GigabitEthernet3               #Interface tied to circuit
-          is_subinterface: False                    #If subinterface set to True
+        - circuit: AAA1                               #Circuit identifier
+          interface: GigabitEthernet3                 #Interface tied to circuit
+          is_subinterface: False                      #If subinterface set to True
           tests:    
 
             #######################################################
@@ -24,7 +24,7 @@ config:
                 - neighbor_ip: 169.254.100.2          #List of neighbors you expect to see over this circuit
                   uptime_conform: gt 1                #How many DAYS we expect the bgp peer to be up at minimum. 
                   address_families:                         
-                    - address_family: ipv4 unicast    #Valid types - ipv4 unicast, vpnv4 unicast 
+                    - address_family: ipv4 unicast    #Valid types - ipv4 unicast, vpnv4 unicast. default is ipv4 unicast
                       received_routes:                #Each route will be verified to exist in show ip bgp neighbor X received-routes
                         - 10.1.1.0/24
                       advertised_routes:              #Each route will be verified to exist in show ip bgp neighbor X advertised-routes
