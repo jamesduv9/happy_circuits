@@ -158,7 +158,10 @@ class BGPTests(aetest.Testcase):
                             for tested_route in af.get('received_routes'):
                                 logging.critical("Take this test with a grain of salt, Cannot validate prefix length of the route due to Genie parser")
                                 tested_route = tested_route.split('/')[0]
-                                received_routes = neighbor_values.get('address_family', {}).get(af_name, {}).get("routes").keys()
+                                try:
+                                    received_routes = neighbor_values.get('address_family', {}).get(af_name, {}).get("routes").keys()
+                                except:
+                                    received_routes = ""
                                 
                                 logging.info(f"Expecting to find {tested_route} in {received_routes}")
                                 assert tested_route in received_routes
