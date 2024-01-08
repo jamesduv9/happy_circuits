@@ -1,5 +1,5 @@
 # happy_circuits
-Work in progress. Intent-based network circuit testing. Validate circuits are meeting your intent with pyATS tests. Describe your intent in a YAML file and let pyATS validate.
+For DevNet Expert Studies. Intent-based network circuit testing. Validate circuits are meeting your intent with pyATS tests. Describe your intent in a YAML file and let pyATS validate.
 
 ## Why?
 Sometimes you want more than just simple red/green lights provided by a network monitoring tool, and some things simply don't show up in logs. External circuits are often a weak point in the network due to not having full visibility of both sides. I wanted to create a tool that could validate that these circuits are meeting some level of intent in an ondemand or scheduled test.
